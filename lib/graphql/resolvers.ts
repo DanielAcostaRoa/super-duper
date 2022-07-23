@@ -6,7 +6,7 @@ import dbConnect from "lib/db/dbConnect";
 
 const { v4: uuidv4 } = require('uuid');
 const {Distribution: DistributionModel} = require('lib/db/models/distribution');
-
+const {Collection: CollectionModel} = require('lib/db/models/collection');
 @Resolver()
 export default class AccountResolver {
 
@@ -68,7 +68,7 @@ export default class AccountResolver {
     collection.products = collectionInput.products;
     collection.payment = collectionInput.payment;
     await dbConnect();
-    const collection_obj = await DistributionModel.create({
+    const collection_obj = await CollectionModel.create({
       uuid: collection.id,
       from: collection.from,
       to: collection.to,
@@ -79,6 +79,7 @@ export default class AccountResolver {
           salePrice: product.salePrice,
         }
       }),
+      payment: collection.payment,
     });
 
     return collection;
